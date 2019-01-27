@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+ 
+  "name": "Soccerproject.com custom css",
+  "version": "0.1.0",
+  "description": "Modify the styles on the site",
+  "browser_action": {
+    "default_icon": "images/favicon16.ico",  // optional
+    "default_title": "Soccer Project Tool"      // optional; shown in tooltip
+  },
+
+  "web_accessible_resources": [
+    "font/*.woff2"
+  ],
+ 
+  "content_scripts": [{
+    "css": ["styles.css"],
+    "js": ["jquery-3.2.1.min.js","jquery.cookie.js","content.js","test.js","friendly.js","training.js","player_overview.js","player_snapshots.js"],
+    "matches": ["https://www.soccerproject.com/*"]
+  }]
+ 
+}
