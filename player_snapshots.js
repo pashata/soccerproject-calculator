@@ -3,6 +3,7 @@
 	$(document).ready(function(){
 
 		var isTransferPage 	= window.location.pathname.replace(/^\/([^\/]*).*$/, '$1').includes("spnewl_transfer_buy.php"),
+			isTransferMade 	= window.location.pathname.replace(/^\/([^\/]*).*$/, '$1').includes("spnewl_transfer_made.php"),
 			isPlayerDetails = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1').includes("spnewl_speler_detail.php");
 
 		var playersSnaps 	= new cookieList("playersSnaps");
