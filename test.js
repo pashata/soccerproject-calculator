@@ -102,6 +102,15 @@
 			})
 		}
 
+		/* TODO: EXPAND THE ROWS AND CREATE SELECTION INSTEAD GENERATING THE CODE */
+		function spinfoButtonTriggerTEST() {
+			let players = $('#newContent a[onclick*="LoadPlayerInDiv"]');
+
+			players.each(function(){
+				$(this).trigger("onclick");
+			})
+		}
+
 		function generateSpinfoCode(data,playerID) {
 			var newTable 	= $(data),
 				playerCode 	= '';
