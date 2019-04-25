@@ -3,9 +3,10 @@
 
 	$(document).ready(function(){
 
-		var isTransferPage = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1').includes("spnewl_transfer_buy.php");
+		var isTransferPage = window.location.pathname.replace(/^\/([^\/]*).*$/, '$1').includes("spnewl_transfer_buy.php"),
+			isTransferMade 	= window.location.pathname.replace(/^\/([^\/]*).*$/, '$1').includes("spnewl_transfer_made.php");
 
-		if (isTransferPage) {
+		if (isTransferPage || isTransferMade) {
 			var newTableDiv = $('<div id="newContent"><table><tbody></tbody></table></div>'),
 				theLinks 	= [];
 
