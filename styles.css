@@ -370,7 +370,28 @@ body.scpr-extension #content .pbutton a {
 	justify-content: center;
 	align-items: center;
 }
-
+#newContent td.milion {
+	background-color: #e44646;
+	color: #fff;
+}
+#newContent td.thousand {
+	background-color: #dddddd;	
+}
+#newContent td.skilllevel1 {
+	background-color: #e41111;
+	color: #fff;
+}
+#newContent td.skilllevel2 {
+	background-color: #e42525;
+	color: #fff;
+}
+#newContent td.skilllevel3 {
+	background-color: #e43d3d;
+	color: #fff;
+}
+#newContent tr:hover td:not(.milion):not(.thousand):not(.skilllevel1):not(.skilllevel2):not(.skilllevel3) {
+	background-color: #e4eef8;
+}
 /*
 *
 *	Friendly games

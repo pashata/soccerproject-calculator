@@ -594,7 +594,8 @@
 
 			/*document.body.removeChild(dummy); // Remove it as its not needed anymore*/
 
-			console.log(text);
+			//console.log(text);
+			testCrossBrowser(text);
 		}
 
 		function snapExist(plID) {
@@ -648,6 +649,88 @@
 			$('#teamoffer').val(valueToBid);
 
 			$('#duur').val('3');
+		}
+
+		function testCrossBrowser(testPlayers) {
+
+			let corsUrl = 'https://cors-anywhere.herokuapp.com/';
+			let theLink = 'http://spinfo-tool.com/player';
+
+			let checkedPosition = $('.position-checkboxes input:checked').text().trim();
+
+			let formData = "type=2&";
+			formData += "position="+checkedPosition+"&";
+			formData += "input="+encodeURIComponent(testPlayers);
+
+			$.ajax({
+			    type: "POST",
+			    url: corsUrl + theLink,
+			    data: formData,
+				headers: {
+					"x-requested-with": "xhr" 
+				},
+			    success: function (data) {
+			    	processSpinfoData(data);
+			    },
+				error:function (xhr, ajaxOptions, thrownError){
+				    if(xhr.status==404) {
+				        console.log('Nemat igrachi! 404 ERROR');
+				    }
+				}
+			});
+
+		}
+
+		function processSpinfoData(data) {
+			let playersTable = $(data).find('#performance');
+
+			playersTable.find('.hidden').remove();
+
+			$('#newContent').find('td:nth-child(5),td:nth-child(4)').remove();
+			playersTable.find('td:first-child span').remove(); //remove position from results
+
+			//player name
+			playersTable.find('td:first-child').each(function(){
+				let playerName 		= $(this).text().split('[')[0].trim(),
+					spPlayerRow 	= $(this).parent(),
+					plAggresion 	= spPlayerRow.find('td:nth-child(2)').text(),
+					plHiddenSkill 	= spPlayerRow.find('td:nth-child(9)').text(),
+					plValue 		= spPlayerRow.find('td:nth-child(10)').text().trim(),
+					plPerformance 	= spPlayerRow.find('td:nth-child(5)').text(),
+					plRating	 	= spPlayerRow.find('td:nth-child(7)').text();
+
+				let playerRow = $('#newContent').find('td:contains("'+playerName+'")').parent();
+
+				//Value class
+				let plValueClass = '';
+				if (plValue[plValue.length -1] == 'M') {
+					plValueClass = 'milion';
+				} else if (plValue[plValue.length -1] == 'K') {
+					plValueClass = 'thousand';
+				}
+
+				//Hidden value
+				let plSkillClass = '',
+					cleanSkillValue = parseInt(plHiddenSkill.split('%')[0].trim());
+
+				if (cleanSkillValue>95) {
+					plSkillClass = 'skilllevel1';
+				} else if (cleanSkillValue>90) {
+					plSkillClass = 'skilllevel2';
+				} else if (cleanSkillValue>85) {
+					plSkillClass = 'skilllevel3';
+				} else if (cleanSkillValue>80) {
+					plSkillClass = 'skilllevel4';
+				} else if (cleanSkillValue>75) {
+					plSkillClass = 'skilllevel5';
+				} else if (cleanSkillValue>70) {
+					plSkillClass = 'skilllevel6';
+				}
+
+				playerRow.find('td:last-child').after('<td class="'+plValueClass+'">'+plValue+'</td><td>'+plPerformance+'</td><td>'+plRating+'</td>');
+				playerRow.find('td:nth-child(3)').after('<td>'+plAggresion+'</td>')
+				playerRow.find('td:nth-child(1)').after('<td class="'+plSkillClass+'">'+plHiddenSkill+'</td>')
+			})
 		}
 
 	})

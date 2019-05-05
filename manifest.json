@@ -12,6 +12,10 @@
   "web_accessible_resources": [
     "font/*.woff2"
   ],
+
+  "background": {
+      "scripts": ["hot-reload.js"]
+  },
  
   "content_scripts": [{
     "css": ["styles.css"],
