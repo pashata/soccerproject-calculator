@@ -6,7 +6,7 @@
   "description": "Modify the styles on the site",
   "browser_action": {
     "default_icon": "images/favicon16.ico",  // optional
-    "default_title": "Soccer Project Tool"      // optional; shown in tooltip
+    "default_title": "Soccer Project Tool"     // optional; shown in tooltip
   },
 
   "web_accessible_resources": [
@@ -14,7 +14,10 @@
   ],
 
   "background": {
-      "scripts": ["hot-reload.js"]
+      "scripts": [
+        "hot-reload.js",
+        "background.js"
+      ]
   },
  
   "content_scripts": [{

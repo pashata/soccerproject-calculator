@@ -14,7 +14,6 @@
 			eventHandlers();
 
 			$('#buyform table').after(newTableDiv);
-
 		}
 
 		function eventHandlers() {
@@ -168,19 +167,6 @@
 			return playerCode;
 		}
 
-		function calculateTransfer() {
-
-		  $.ajax({
-		      url: '//spinfo-tool.com/',
-		      success: function (data) {
-		      	console.log(data);
-		      },
-		      error: function(data) {
-		      	console.log(data);
-		      }
-		  });
-		}
-
 		function insertCustome() {
 			var yourCustomJavaScriptCode = "LoadPlayerInDiv(29632878, 'id_');";
 			var script = document.createElement('script');
@@ -267,26 +253,12 @@
 			/* */
 			var priceRangeCont = $('<div class="price-range single-options-cont"></div>');
 
-			priceRangeCont.append('<h3>Price range:</h3>');
+			priceRangeCont.append('<h3>Maximum price:</h3>');
 
-			var minPriceDropdown = '<select name="min-price">'+
-										'<option value=""></option>'+
-										'<option value="500000">500K</option>';
-			for (var i=1;i<30;i++) {
-				minPriceDropdown += 	'<option value="'+i*1000000+'">'+i+'M</option>';
+			for (var i=16;i<45;i=i+5) {
+				var newCheckbox = $('<input type="radio" name="max_price_range" id="max_price_range_'+i+'" value="'+i*1000000+'" '+checkedAggresion+'><label for="max_price_range_'+i+'">'+i+'M</label>');
+				priceRangeCont.append(newCheckbox);
 			}
-			minPriceDropdown +=		'</select>';
-
-			var maxPriceDropdown = '<select name="max-price">'+
-										'<option value=""></option>'+
-										'<option value="500000">500K</option>';
-			for (var i=1;i<30;i++) {
-				maxPriceDropdown += 	'<option value="'+i*1000000+'">'+i+'M</option>';
-			}
-			maxPriceDropdown +=		'</select>';
-
-			priceRangeCont.append($(minPriceDropdown));
-			priceRangeCont.append($(maxPriceDropdown));
 
 			basicOpt.append(priceRangeCont);
 
@@ -295,26 +267,39 @@
 			/* */
 			var aggressionRangeCont = $('<div class="aggression-range single-options-cont"></div>');
 
-			aggressionRangeCont.append('<h3>Aggresion range:</h3>');
+			aggressionRangeCont.append('<h3>Maximum aggression:</h3>');
 
-			var minAggressionDropdown = '<select name="min-aggresion">'+
-										'<option value=""></option>';
-			for (var i=1;i<101;i++) {
-				minAggressionDropdown += 	'<option value="'+i+'">'+i+'%</option>';
+			for (var i=0;i<101;i=i+10) {
+				var checkedAggresion = '';
+				if (i==70) {
+					var checkedAggresion = 'checked';
+				}
+				console.log(checkedAggresion);
+
+				var newCheckbox = $('<input type="radio" name="max_aggresion" id="max_aggresion_'+i+'" value="'+i+'" '+checkedAggresion+'><label for="max_aggresion_'+i+'">'+i+'</label>');
+				aggressionRangeCont.append(newCheckbox);
+			}	
+
+			basicOpt.append(aggressionRangeCont);
+
+			/* * *
+			/*	Minimum Hidden Skill
+			/* */
+			var hiddenSkillCont = $('<div class="minimum-hidden-skill single-options-cont"></div>');
+
+			hiddenSkillCont.append('<h3>Minimum hidden skill:</h3>');
+
+			for (var i=60;i<111;i=i+10) {
+				var checkedMinimumSkill = '';
+				if (i==80) {
+					var checkedMinimumSkill = 'checked';
+				}
+
+				var newCheckbox = $('<input type="radio" name="minimum_hidden_skill" id="max_aggresion_'+i+'" value="'+i+'" '+checkedMinimumSkill+'><label for="max_aggresion_'+i+'">'+i+'</label>');
+				hiddenSkillCont.append(newCheckbox);
 			}
-			minAggressionDropdown +=		'</select>';
 
-			var maxAggressionDropdown = '<select name="max-aggresion">'+
-										'<option value=""></option>';
-			for (var i=1;i<101;i++) {
-				maxAggressionDropdown += 	'<option value="'+i+'">'+i+'%</option>';
-			}
-			maxAggressionDropdown +=		'</select>';
-
-			aggressionRangeCont.append($(minAggressionDropdown));
-			aggressionRangeCont.append($(maxAggressionDropdown));
-
-			attributesOpt.append(aggressionRangeCont);
+			basicOpt.append(hiddenSkillCont);
 
 			/* * *
 			/*	Additional options
@@ -457,11 +442,7 @@
 		function processData (playersTable) {
 			var buyNowON = $('.option-box input[name="buy-now"]').is(':checked');
 
-			var minPrice = $('.option-box [name="min-price"]').val(),
-				maxPrice = $('.option-box [name="max-price"]').val();
-
-			var minAggresion = $('.option-box [name="min-aggresion"]').val(),
-				maxAggresion = $('.option-box [name="max-aggresion"]').val();
+			var maxPrice = $('.option-box [name="max_price_range"]:checked').val();
 
 			var playersSnaps = new cookieList("playersSnaps").items();
 
@@ -481,9 +462,9 @@
 				}
 
 				//Compare prices
-				if (minPrice != '' || maxPrice != '') {
+				if (maxPrice != '') {
 					var thePrice 	= $(this).find('td').eq(5).text();
-					var isInRange 	= comparePrices(minPrice,maxPrice,thePrice);
+					var isInRange 	= comparePrices(maxPrice,thePrice);
 
 					if (!isInRange) {
 						return;
@@ -513,7 +494,7 @@
 			})
 		}
 
-		function comparePrices(min,max,price) {
+		function comparePrices(max,price) {
 			price = price.toString();
 
 			price = price.replace(/ /g,'');
@@ -538,9 +519,6 @@
 				price = 0;
 			}
 
-			if (price<min) {
-				return false;
-			}
 			if (price>max) {
 				return false;
 			}
@@ -684,6 +662,9 @@
 		function processSpinfoData(data) {
 			let playersTable = $(data).find('#performance');
 
+			let maxAggresion = $('.option-box [name="max_aggresion"]:checked').val();
+			let minHiddenSkill = $('.option-box [name="minimum_hidden_skill"]:checked').val();
+
 			playersTable.find('.hidden').remove();
 
 			$('#newContent').find('td:nth-child(5),td:nth-child(4)').remove();
@@ -700,6 +681,16 @@
 					plRating	 	= spPlayerRow.find('td:nth-child(7)').text();
 
 				let playerRow = $('#newContent').find('td:contains("'+playerName+'")').parent();
+
+				if (plAggresion>maxAggresion) {
+					playerRow.remove();
+					return;
+				}
+
+				if (minHiddenSkill>plHiddenSkill) {
+					playerRow.remove();
+					return;
+				}
 
 				//Value class
 				let plValueClass = '';
