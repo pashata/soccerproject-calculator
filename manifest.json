@@ -22,7 +22,7 @@
  
   "content_scripts": [{
     "css": ["styles.css"],
-    "js": ["jquery-3.2.1.min.js","jquery.cookie.js","content.js","test.js","friendly.js","training.js","player_overview.js","player_snapshots.js"],
+    "js": ["jquery-3.2.1.min.js","jquery.cookie.js","content.js","test.js","friendly.js","training.js","player_overview.js","player_snapshots.js","contracts.js"],
     "matches": ["https://www.soccerproject.com/*"]
   }]
  

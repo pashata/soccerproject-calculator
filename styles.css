@@ -628,3 +628,12 @@ span.difference.lower {
 	color: #666;
 	transition:all 0.2s linear;
 }
+
+td.salary1 {
+	background-color: #0c2f66;
+	color: #fff;
+}
+td.salary2 {
+	background-color: #0d4aa6;
+	color: #fff;
+}
